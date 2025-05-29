@@ -24,6 +24,7 @@ Each keypoint has **(x, y, z) coordinates**, which are used to classify gestures
 
 ---
 
+
 ## 🚀 How to Run the Project  
 
 ### 1️⃣ Clone the Repository  

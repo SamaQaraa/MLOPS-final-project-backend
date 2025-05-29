@@ -24,7 +24,6 @@ Each keypoint has **(x, y, z) coordinates**, which are used to classify gestures
 
 ---
 
-
 ## 🚀 How to Run the Project  
 
 ### 1️⃣ Clone the Repository  
@@ -102,6 +101,3 @@ Based on the F1-score, the **Support Vector Machine (SVM)** model achieved the b
   - Hand landmarks are **recentered** (wrist as origin) to handle scale differences.
   - The **z** coordinate does not require additional processing.
   - The **output is stabilized** by taking the **mode of predictions** over a window.
-
-
-```

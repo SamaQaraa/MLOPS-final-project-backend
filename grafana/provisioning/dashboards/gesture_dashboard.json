@@ -1,0 +1,44 @@
+{
+  "id": null,
+  "uid": "gesture-dashboard",
+  "title": "Gesture Monitoring Dashboard",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+      {
+        "type": "stat",
+        "title": "Total Requests",
+        "targets": [{
+          "expr": "sum(rate(http_requests_total[1m]))",
+          "legendFormat": "req/s",
+          "instant": false
+        }]
+      },
+      {
+        "type": "stat",
+        "title": "Invalid Input Requests",
+        "targets": [{
+          "expr": "sum(rate(invalid_input_requests_total[1m]))",
+          "legendFormat": "invalid/s",
+          "instant": false
+        }]
+      },
+      {
+        "type": "graph",
+        "title": "Model Inference Time (avg)",
+        "targets": [{
+          "expr": "avg(rate(model_inference_duration_seconds_sum[1m])/rate(model_inference_duration_seconds_count[1m]))",
+          "legendFormat": "avg {{instance}}"
+        },{
+          "expr": "histogram_quantile(0.95, rate(model_inference_duration_seconds_bucket[1m]))",
+          "legendFormat": "p95 {{instance}}"
+        }],
+        "options": {
+          "legend": { "show": true },
+          "tooltip": { "mode": "multiple" }
+        }
+      }
+    ]
+}

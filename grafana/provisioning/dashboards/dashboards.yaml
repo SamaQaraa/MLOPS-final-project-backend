@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards
+      # overwrite: true  # <-- This is where overwrite belongs, not inside the JSON file
+

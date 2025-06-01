@@ -1,103 +1,97 @@
-# Hand Gesture Classification Using MediaPipe Landmarks from the HaGRID Dataset  
+# Hand Gesture Recognition MLOps Project 🖐️
 
-## 📌 Overview  
-This project focuses on classifying hand gestures using **landmark data extracted with MediaPipe** from the HaGRID dataset.  
+## Overview 🎯
+This project implements a real-time hand gesture recognition system using FastAPI, with comprehensive MLOps practices including monitoring, testing, and CI/CD pipeline integration.
 
-The input is a **CSV file** containing hand landmarks (**x, y, z** coordinates of 21 key points).  
-The output is a **trained machine learning model** that classifies hand gestures into different categories.  
+## Architecture 🏗️
+The project uses a modern microservices architecture with the following components:
+- FastAPI backend service for gesture recognition
+- Prometheus for metrics collection
+- Grafana for visualization and monitoring
+- Docker containers for deployment
+- GitHub Actions for CI/CD
 
----
+## Setup and Installation 🚀
 
-## 🖐️ Hand Landmarks  
-The landmarks used in this project are based on **MediaPipe's hand tracking model**, which detects **21 key points** on a hand.  
+### Prerequisites
+- Docker and Docker Compose
+- Python 3.9+
+- Git
 
-![Hand Landmarks](img/hand_landmarks.png)  
-
-Each keypoint has **(x, y, z) coordinates**, which are used to classify gestures.  
-
----
-
-## 📂 Dataset Details  
-- The **HaGRID dataset** contains **18 different hand gestures**.  
-- Each gesture is represented by **21 hand landmarks** extracted using MediaPipe.  
-- The dataset is stored in a **CSV file**, where each row contains **landmark coordinates** and a **gesture label**.  
-
----
-
-## 🚀 How to Run the Project  
-
-### 1️⃣ Clone the Repository  
+### Quick Start
+1. Clone the repository:
 ```bash
-git clone [https://github.com/SamaQaraa/MLOPS-FINAL-PROJECT-BACKEND.git](https://github.com/SamaQaraa/MLOPS-FINAL-PROJECT-BACKEND.git)
-cd MLOPS-FINAL-PROJECT-BACKEND
-````
-
-### 2️⃣ Install Dependencies
-
-```bash
-pip install -r requirements.txt
+git clone https://github.com/SamaQaraa/MLOPS-final-project-backend.git
+cd MLOPS-final-project-backend
 ```
 
-### 3️⃣ Run MLflow Tracking Server (Local)
-
-Open your terminal and start the MLflow UI:
-
+2. Run with Docker Compose:
 ```bash
-mlflow ui
+docker-compose up -d
 ```
 
-Keep this terminal window open. You can access the MLflow UI in your web browser at `http://localhost:5000`.
+3. Access the services:
+- FastAPI: http://localhost:8000
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000
 
-### 4️⃣ Train and Log Models with Hyperparameter Tuning
+## Monitoring with Grafana 📊
 
-In a **new terminal**, navigate to the project directory and run the main script (assuming the training code is saved as `train_models.py`):
+Our Grafana dashboard provides real-time monitoring of critical metrics. Here's why we chose specific visualizations:
 
+### 1. Total Requests Counter 📈
+- **What**: Displays the total number of API requests per second
+- **Why**: 
+  - Helps monitor overall system usage
+  - Identifies traffic patterns and potential spikes
+  - Assists in capacity planning
+
+### 2. Invalid Input Requests 🚫
+- **What**: Shows the rate of invalid requests received
+- **Why**: 
+  - Helps detect potential API misuse
+  - Identifies client-side issues
+  - Monitors data quality
+
+### 3. Model Inference Time Graph ⚡
+- **What**: Visualizes model prediction latency with average and 95th percentile
+- **Why**: 
+  - Tracks model performance in real-time
+  - Helps identify performance degradation
+  - Ensures SLA compliance
+  - The 95th percentile helps identify outliers and worst-case scenarios
+
+### Metrics Collection 📉
+- Using Prometheus for reliable metrics collection
+- Custom metrics implemented:
+  - `http_requests_total`: Counter for total HTTP requests
+  - `invalid_input_requests_total`: Counter for invalid inputs
+  - `model_inference_duration_seconds`: Histogram for inference time
+
+## Testing 🧪
+Run the test suite:
 ```bash
-python train_models.py
+python run_tests.py
 ```
 
-This script will preprocess the data, train multiple machine learning models (Logistic Regression, Decision Tree, Support Vector Machine, and Random Forest) with **GridSearchCV** for hyperparameter tuning, evaluate them, and log all results to your local MLflow tracking server. You will see confusion matrix plots appear for each model as it completes its training and evaluation.
+The project includes:
+- Unit tests
+- Integration tests
+- Performance tests
 
-### 5️⃣ Real-Time Gesture Detection
+## CI/CD Pipeline 🔄
+Automated deployment using GitHub Actions:
+- Runs tests
+- Builds Docker images
+- Deploys to production
 
-To test the model in real-time using your webcam, run:
+## API Documentation 📚
+Once running, visit http://localhost:8000/docs for the interactive API documentation.
 
-```bash
-python main.py
-```
+## Contributing 🤝
+1. Fork the repository
+2. Create a feature branch
+3. Commit changes
+4. Push to the branch
+5. Create a Pull Request
 
-## 📊 Project Deliverables
-
-### ✅ Automated ML Workflow with MLflow
-
-  - **Data Loading** – Importing the dataset.
-  - **Data Preprocessing** – Cleaning and normalizing data by recentering landmarks (wrist as origin) and dividing by mid-finger tip position.
-  - **Model Training** – Automated training and evaluation of multiple classifiers, including Logistic Regression, Decision Tree, Support Vector Machine, and Random Forest.
-  - **Hyperparameter Tuning** – Utilizes `GridSearchCV` to find optimal hyperparameters for each model.
-  - **Experiment Tracking** – Logs models, hyperparameters, and evaluation metrics (accuracy, precision, recall, and F1-score) to MLflow.
-  - **Evaluation** – Generates and logs confusion matrices for each trained model.
-
------
-
-## ✨ MLflow Tracking & Results
-
-We used MLflow to track and compare the performance of different classification models. The MLflow UI provides a comprehensive overview of each experiment run, including logged parameters, metrics, and model artifacts.
-
-Below is a screenshot of the MLflow UI showing the results for the trained models:
-
-![MLflow UI](img/mlflow.png)  
-
-Based on the F1-score, the **Support Vector Machine (SVM)** model achieved the best performance:
-
-  * **Support Vector Machine**: F1-score: `0.99066`, Accuracy: `0.98995`
-  * **Random Forest**: F1-score: `0.97680`, Accuracy: `0.97602`
-  * **Decision Tree**: F1-score: `0.95967`, Accuracy: `0.95404`
-  * **Logistic Regression**: F1-score: `0.85369`, Accuracy: `0.84946`
-
------
-
-## 🔥 Notes & Improvements
-
-  - Hand landmarks are **recentered** (wrist as origin) to handle scale differences.
-  - The **z** coordinate does not require additional processing.
-  - The **output is stabilized** by taking the **mode of predictions** over a window.

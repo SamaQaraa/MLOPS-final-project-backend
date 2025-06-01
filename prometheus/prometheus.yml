@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'fastapi'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['fastapi:8000']  # Use service name in Docker
+    # Add these important settings:
+    scrape_interval: 5s
+    scrape_timeout: 4s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'fastapi:8000'
